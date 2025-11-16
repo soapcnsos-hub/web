@@ -167,7 +167,17 @@ body {
   align-items: center;
   justify-content: center;
 }
+.past-clients__logo-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
 
+.past-clients__logo-item:hover {
+  transform: scale(1.05);
+  opacity: 0.8;
+}
 .scroll-to-top {
   position: fixed;
   bottom: 30px;
