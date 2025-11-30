@@ -1,4 +1,4 @@
-// Плавное перемещение в самый верх, при нажатии на кнопку scrollToTop
+// кнопка "наверх"
 const scrollToTopBtn = document.getElementById("scrollToTop");
 
 window.addEventListener("scroll", () => {
@@ -16,7 +16,7 @@ scrollToTopBtn.addEventListener("click", () => {
   });
 });
 
-// Плавное появление элементов, когда пользователь проматывает страницу вниз
+// анимация появления элементов
 const fadeElements = document.querySelectorAll(".fade-in");
 
 const appearOptions = {
