@@ -1,17 +1,3 @@
-// Плавное перемещение к элементу, вытранному на навбаре.
-document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-  anchor.addEventListener("click", function (e) {
-    e.preventDefault();
-    const target = document.querySelector(this.getAttribute("href"));
-    if (target) {
-      target.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-  });
-});
-
 // Плавное перемещение в самый верх, при нажатии на кнопку scrollToTop
 const scrollToTopBtn = document.getElementById("scrollToTop");
 
