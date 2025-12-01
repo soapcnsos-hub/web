@@ -1,4 +1,18 @@
-// кнопка "наверх"
+// Плавное перемещение к элементу, вытранному на навбаре.
+document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+  anchor.addEventListener("click", function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute("href"));
+    if (target) {
+      target.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  });
+});
+
+// Плавное перемещение в самый верх, при нажатии на кнопку scrollToTop
 const scrollToTopBtn = document.getElementById("scrollToTop");
 
 window.addEventListener("scroll", () => {
@@ -16,7 +30,7 @@ scrollToTopBtn.addEventListener("click", () => {
   });
 });
 
-// анимация появления элементов
+// Плавное появление элементов, когда пользователь проматывает страницу вниз
 const fadeElements = document.querySelectorAll(".fade-in");
 
 const appearOptions = {
@@ -38,4 +52,28 @@ appearOptions);
 
 fadeElements.forEach((element) => {
   appearOnScroll.observe(element);
+});
+
+// Валидация введеной почты при помощи регулярки
+const subscribeForm = document.getElementById("subscribeForm");
+const emailInput = document.getElementById("emailInput");
+const formMessage = document.getElementById("formMessage");
+
+subscribeForm.addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const email = emailInput.value.trim();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (emailRegex.test(email)) {
+    formMessage.textContent = "✓ Thank you for subscribing!";
+    formMessage.style.color = "green";
+    emailInput.value = "";
+  } else {
+    formMessage.textContent = "✗ Please enter a valid email address";
+    formMessage.style.color = "red";
+  }
+  setTimeout(() => {
+    formMessage.textContent = "";
+  }, 3000);
 });
