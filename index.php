@@ -1,33 +1,13 @@
 <?php
-// обработка формы имени и фамилии
-$result = ''; // создаем переменную для хранения результата
-
-// проверяем, что форма была отправлена методом POST и содержала нужные поля
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['first_name']) && isset($_POST['last_name'])) {
-  // получаем данные из формы и очищаем от лишних пробелов
-  $firstName = trim($_POST['first_name']); // берем имя из формы и убираем пробелы по краям
-  $lastName = trim($_POST['last_name']);   // берем фамилию из формы и убираем пробелы по краям
-
-  // проверяем что оба поля не пустые
-  if (!empty($firstName) && !empty($lastName)) {
-    // объединяем имя и фамилию в одну строку с пробелом между ними
-    $result = $firstName . ' ' . $lastName;
-
-    // сохраняем контакт в файл для дальнейшего использования
-    file_put_contents(
-      'contacts.txt',
-      date('Y-m-d H:i:s') . ' - ' . $result . "\n", // добавляем дату и время
-      FILE_APPEND // добавляем в конец файла, а не перезаписываем
-    );
-  } else {
-    // если какое-то поле пустое, показываем ошибку
-    $result = "Ошибка: пожалуйста, заполните все поля!";
-  }
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name = trim(htmlspecialchars($_POST['name'] ?? ''));
+    $surname = trim(htmlspecialchars($_POST['surname'] ?? ''));
+    $result = $name . ' ' . $surname;
+    file_put_contents('contacts.txt', date('Y-m-d H:i:s') . ' - ' . $result . "\n", FILE_APPEND);
 }
 ?>
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,107 +17,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['first_name']) && isset
   <link
     href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
     rel="stylesheet">
-    <style>
-    .string-form-section {
-  background: #000;
-  padding: 80px 20px;
-  text-align: center;
-  color: #fff;
-  display: block;
-}
-
-.string-form-title {
-  font-size: 32px;
-  font-weight: 400;
-  margin-bottom: 15px;
-  color: #fff;
-}
-
-.string-form-subtitle {
-  font-size: 18px;
-  color: #c0c0c0;
-  margin-bottom: 30px;
-}
-
-.string-form {
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-.form-group {
-  margin-bottom: 20px;
-  text-align: left;
-}
-
-.form-label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 500;
-  color: #fff;
-}
-
-.form-input {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #fff;
-  background: #000;
-  color: #fff;
-  font-family: 'Poppins', sans-serif;
-  font-size: 16px;
-  box-sizing: border-box;
-}
-
-.form-input:focus {
-  outline: none;
-  border-color: #c0c0c0;
-}
-
-.submit-btn {
-  width: 100%;
-  padding: 15px;
-  background: #fff;
-  color: #000;
-  border: none;
-  cursor: pointer;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 500;
-  font-size: 16px;
-  transition: all 0.3s ease;
-  margin-top: 10px;
-}
-
-.submit-btn:hover {
-  background: #c0c0c0;
-  transform: translateY(-2px);
-}
-
-.result-container {
-  margin-top: 30px;
-  padding: 20px;
-  background-color: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 5px;
-  text-align: left;
-  display: block;
-}
-
-.result-title {
-  color: #fff;
-  margin-bottom: 10px;
-  font-size: 18px;
-}
-
-.result-text {
-  color: #c0c0c0;
-  font-size: 16px;
-  word-wrap: break-word;
-}
-</style>
+  <style>
+    .contact-section {
+      background: #000;
+      padding: 80px 20px;
+      text-align: center;
+      color: #fff;
+    }
+    .contact-title {
+      font-size: 32px;
+      margin-bottom: 15px;
+    }
+    .contact-subtitle {
+      font-size: 18px;
+      color: #c0c0c0;
+      margin-bottom: 30px;
+    }
+    .result-title {
+      color: #fff;
+      margin: 20px 0;
+      font-size: 18px;
+    }
+  </style>
 </head>
-
 <body>
   <section class="monstera-leafs">
-    <div class="featured-image fade-in">
+    <div class="featured-image">
       <p class="featured-image__subtitle">MONSTERA LEAFS</p>
       <p class="featured-image__text">Vestibulum sit amet urna turpis. Mauris euismod elit et nisi ultrices,
         ut
@@ -146,58 +51,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['first_name']) && isset
     <nav class="icons-nav">
       <ul class="icons-nav__list">
         <li class="icons-nav__item">
-          <img src="img/icon_clock.svg" height="16px" width="16px" />
+          <img src="img/icon_clock.svg" height="16px" width="16px"/>
           <p class="icons-nav__value">1/400s</p>
         </li>
         <li class="icons-nav__item">
-          <img src="img/icon_focus.svg" height="16px" width="16px" />
+          <img src="img/icon_focus.svg" height="16px" width="16px"/>
           <p class="icons-nav__value">f/3,5</p>
         </li>
         <li class="icons-nav__item">
-          <img src="img/icon_iso.svg" height="16px" width="32px" />
+          <img src="img/icon_iso.svg" height="16px" width="32px"/>
           <p class="icons-nav__value">100</p>
         </li>
         <li class="icons-nav__item">
-          <img src="img/icon_mark.svg" height="16px" width="10px" />
+          <img src="img/icon_mark.svg" height="16px" width="10px"/>
           <p class="icons-nav__value">Costa Rica</p>
         </li>
       </ul>
     </nav>
   </section>
 
-  <section class="string-form-section fade-in">
-    <h2 class="string-form-title">Если вас что-то заинтересовало...</h2>
-    <p class="string-form-subtitle">Введите ваше имя и фамилию, и мы свяжемся с вами для консультации</p>
+  <section class="contact-section">
+    <h2 class="contact-title">если вас что-то заинтересовало...</h2>
+    <p class="contact-subtitle">введите ваше имя и фамилию, и мы свяжемся с вами для консультации</p>
 
-    <form class="string-form" method="POST" action="">
-      <div class="form-group">
-        <label class="form-label" for="first_name">Ваше имя:</label>
-        <input type="text" id="first_name" name="first_name" class="form-input" placeholder="Введите ваше имя" required>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label" for="last_name">Ваша фамилия:</label>
-        <input type="text" id="last_name" name="last_name" class="form-input" placeholder="Введите вашу фамилию" required>
-      </div>
-
-      <button type="submit" class="submit-btn">Отправить заявку</button>
+    <form method="POST">
+        <label>Имя:</label>
+        <input type="text" name="name" required><br>
+        <label>Фамилия:</label>
+        <input type="text" name="surname" required><br>
+        <input type="submit" value="Отправить">
     </form>
 
-    <?php if (isset($result) && !empty($result)): ?>
-      <div class="result-container">
-        <h3 class="result-title"><?php echo $result; ?></h3>
-        <div class="result-text">Спасибо за заявку!</div>
-      </div>
+    <?php if (isset($result) && mb_strlen($name) >= 6 && mb_strlen($surname) >= 6): ?>
+        <h3><?= $result ?></h3>
+        <p>Спасибо за заявку!</p>
+    <?php else: ?>
+        <p>ошибка!данные меньше 6 символов.</p>
     <?php endif; ?>
   </section>
 
   <section class="past-clients">
-    <div class="past-clients__header fade-in">
+    <div class="past-clients__header">
       <h2 class="past-clients__title">Past clients</h2>
       <h3 class="past-clients__subtitle">Trusted by your favourite companies</h3>
     </div>
 
-    <div class="past-clients__logos fade-in">
+    <div class="past-clients__logos">
       <div class="past-clients__logo-item">
         <img src="img/hill_hayes_logo.svg" alt="Hill Playes" width="128px" height="30px">
       </div>
@@ -216,10 +115,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['first_name']) && isset
     </div>
   </section>
 
-  <!-- кнопка "наверх" -->
   <button class="scroll-to-top" id="scrollToTop">↑</button>
 
   <script src="script.js"></script>
 </body>
-
 </html>
